@@ -3,6 +3,14 @@ import random
 from collections import defaultdict
 
 app = Flask(__name__)
+import traceback
+
+@app.errorhandler(Exception)
+def handle_error(e):
+    traceback.print_exc()
+    return {
+        "error": str(e)
+    }, 500
 
 SHOP_TRIES = 50
 COLORS = ["yellow", "red", "blue", "cyan", "lime", "gray", "purple"]
