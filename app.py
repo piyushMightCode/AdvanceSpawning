@@ -5,7 +5,7 @@ from collections import defaultdict
 app = Flask(__name__)
 
 SHOP_TRIES = 50
-
+COLORS = ["yellow","red","blue","cyan","lime","gray","purple"]
 
 # =========================================================
 # WORLD HELPERS
@@ -60,17 +60,10 @@ def is_valid_shop_placement(world, x, z, shape):
 
 def pick_shop(world):
 
-    house_map = defaultdict(int)
-
-    for v in world.values():
-        if v["type"] == "house":
-            house_map[v["color"]] += 1
-
-    total = sum(house_map.values())
-    if total == 0:
-        return None
-
-    keys = list(world.keys())
+    keys = [
+        k for k, v in world.items()
+        if v["type"] == "empty"
+    ]
 
     for _ in range(SHOP_TRIES):
 
@@ -81,17 +74,11 @@ def pick_shop(world):
         if not is_valid_shop_placement(world, x, z, shape):
             continue
 
-        r = random.uniform(0, total)
-        acc = 0
-        color = None
-
-        for c, v in house_map.items():
-            acc += v
-            if r <= acc:
-                color = c
-                break
+        color = random.choice(COLORS)
 
         return ((x, z), color, o)
+
+    return None
 
     return None
 # =========================================================
@@ -216,7 +203,10 @@ def kill_cluster(clusters, key):
 # =========================================================
 def create_new_cluster(clusters, world, color):
 
-    keys = list(world.keys())
+     keys = [
+        k for k, v in world.items()
+        if v["type"] == "empty"
+    ]
 
     for _ in range(25):
 
