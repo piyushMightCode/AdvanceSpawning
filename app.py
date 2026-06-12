@@ -15,6 +15,8 @@ COLORS = ["yellow", "red", "blue", "cyan", "lime", "gray", "purple"]
 def parse_pos(key):
     if isinstance(key, tuple):
         return key
+    if instance(key,list):
+        return (key[0],key[1])
     x, z = key.strip("[]").split(",")
     return int(x), int(z)
 
