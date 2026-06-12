@@ -285,7 +285,7 @@ def pick_house(world, shops, clusters, score):
 
     attempts = 0
 
-    while attempts < 100:
+    while attempts < 50:
         attempts += 1
 
         base = parse_pos(cluster_key)
