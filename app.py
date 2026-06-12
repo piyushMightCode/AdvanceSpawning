@@ -315,8 +315,10 @@ def pick_house(world, shops, clusters, score):
 def spawn():
 
     data = request.json
-
-    world = data["world"]
+    
+    keys = data["worldkey"]
+    values = data["worldvalue"]
+    world = dict(zip(keys,values))
     shops = data["shops"]
     clusters = data.get("clusters", {})
     score = data.get("score", 0)
