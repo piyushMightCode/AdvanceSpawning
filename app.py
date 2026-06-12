@@ -3,14 +3,10 @@ import random
 from collections import defaultdict
 
 app = Flask(__name__)
-import traceback
 
-@app.errorhandler(Exception)
-def handle_error(e):
-    traceback.print_exc()
-    return {
-        "error": str(e)
-    }, 500
+sessions = {}
+active_id = None
+
 
 SHOP_TRIES = 50
 COLORS = ["yellow", "red", "blue", "cyan", "lime", "gray", "purple"]
@@ -250,16 +246,60 @@ def pick_house(world, shops, clusters, score):
 
 @app.route("/spawn", methods=["POST"])
 def spawn():
+    global active_id
+
     data = request.get_json(force=True)
 
-    keys = data.get("worldkey", [])
-    values = data.get("worldvalue", [])
+    sid = str(data.get("id", ""))
+
+    if not sid:
+        return jsonify({"error": "missing id"}), 400
+
+    if active_id is not None and active_id != sid:
+        sessions.clear()
+
+    active_id = sid
+
+    if sid not in sessions:
+        sessions[sid] = {}
+
+    session = sessions[sid]
+
+    if "worldkey" in data:
+        session["worldkey"] = data["worldkey"]
+
+    if "worldvalue" in data:
+        session["worldvalue"] = data["worldvalue"]
+
+    if "clusters" in data:
+        session["clusters"] = data["clusters"]
+
+    if "shops" in data:
+        session["shops"] = data["shops"]
+
+    if "score" in data:
+        session["score"] = data["score"]
+
+    required = ["worldkey", "worldvalue", "clusters", "shops"]
+
+    missing = [x for x in required if x not in session]
+
+    if missing:
+        return jsonify({
+            "status": "waiting",
+            "missing": missing
+        })
+
+    keys = session["worldkey"]
+    values = session["worldvalue"]
 
     world = {parse_pos(k): v for k, v in zip(keys, values)}
 
-    shops = data.get("shops", {})
-    clusters = data.get("clusters", {})
-    score = data.get("score", 0)
+    shops = session["shops"]
+    clusters = session["clusters"]
+    score = session.get("score", 0)
+
+    sessions.pop(sid, None)
 
     house_result, clusters, expand = pick_house(world, shops, clusters, score)
 
