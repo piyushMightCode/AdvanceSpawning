@@ -304,7 +304,7 @@ def spawn():
 
     world = {parse_pos(k): v for k, v in zip(keys, values)}
 
-    shops = dict(zip(shopkey,shopsvalue))
+    shops = {parse_pos(k): v for k, v in zip(shopkey, shopsvalue)}
     clusters = session["clusters"]
     score = session.get("score", 0)
 
