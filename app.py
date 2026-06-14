@@ -277,13 +277,16 @@ def spawn():
     if "clusters" in data:
         session["clusters"] = data["clusters"]
 
-    if "shops" in data:
-        session["shops"] = data["shops"]
+    if "shopskey" in data:
+        session["shopskey"] = data["shopskey"]
+
+    if "shopsvalue" in data:
+        session["shopvalue"] = data["shopvalue"]
 
     if "score" in data:
         session["score"] = data["score"]
 
-    required = ["worldkey", "worldvalue", "clusters", "shops"]
+    required = ["worldkey", "worldvalue", "clusters", "shopskey"]
 
     missing = [x for x in required if x not in session]
 
@@ -296,9 +299,12 @@ def spawn():
     keys = session["worldkey"]
     values = session["worldvalue"]
 
+    shopkey = session["shopskey"]
+    shopsvalue = session["shopvalue"]
+
     world = {parse_pos(k): v for k, v in zip(keys, values)}
 
-    shops = session["shops"]
+    shops = dict(zip(shopkey,shopsvalue))
     clusters = session["clusters"]
     score = session.get("score", 0)
 
