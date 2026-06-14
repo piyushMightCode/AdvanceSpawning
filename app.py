@@ -102,7 +102,7 @@ def compute_demand(shops, score):
         timer = s.get("timer", 0)
 
         if upgraded:
-            base = 3 + (2 * timer)
+            base = 3 + (1.5 * timer)
             bonus = (1 if score >= 1000 else 0) + (1 if score >= 2000 else 0)
         else:
             base = 2 + timer
