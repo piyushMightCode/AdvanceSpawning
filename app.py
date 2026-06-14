@@ -174,8 +174,9 @@ def create_new_cluster(clusters, world, color):
 
         if not is_valid_tile(world, (x, z)):
             continue
+        limit = random.randint(4,8)
 
-        clusters[key] = ["0/8", color]
+        clusters[key] = ["0/"+str(limit), color]
         return clusters
 
     return clusters
