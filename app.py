@@ -79,8 +79,8 @@ def find_valid_nearby(world, base):
     bx, bz = base
     candidates = []
 
-    for dx in range(-5, 6, 2):
-        for dz in range(-5, 6, 2):
+    for dx in range(-4, 5, 2):
+        for dz in range(-4, 5, 2):
             x, z = bx + dx, bz + dz
 
             if not is_valid_tile(world, (x, z)):
