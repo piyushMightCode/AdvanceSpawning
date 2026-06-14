@@ -105,7 +105,7 @@ def compute_demand(shops, score):
             base = 3 + (2 * timer)
             bonus = (1 if score >= 1000 else 0) + (1 if score >= 2000 else 0)
         else:
-            base = 1.5 + timer
+            base = 2 + timer
             bonus = (0.5 if score >= 1000 else 0) + (0.5 if score >= 2000 else 0)
 
         demand[s["color"]] += base + bonus
