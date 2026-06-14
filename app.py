@@ -280,7 +280,7 @@ def spawn():
     if "shopskey" in data:
         session["shopskey"] = data["shopskey"]
 
-    if "shopsvalue" in data:
+    if "shopvalue" in data:
         session["shopvalue"] = data["shopvalue"]
 
     if "score" in data:
